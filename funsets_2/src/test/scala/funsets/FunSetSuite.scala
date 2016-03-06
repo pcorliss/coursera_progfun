@@ -97,6 +97,7 @@ class FunSetSuite extends FunSuite {
        * The string argument of "assert" is a message that is printed in case
        * the test fails. This helps identifying which assertion failed.
        */
+      assert(!contains(s1, 2), "Singleton")
       assert(contains(s1, 1), "Singleton")
     }
   }
@@ -110,5 +111,42 @@ class FunSetSuite extends FunSuite {
     }
   }
 
+  test("intersect contains all elments in common") {
+    new TestSets {
+      val s = intersect(s1, s2)
+      assert(!contains(s, 1), "Intersect 1")
+      assert(!contains(s, 2), "Intersect 2")
+      assert(!contains(s, 3), "Intersect 3")
+      val t = intersect(s1, s1)
+      assert(contains(t, 1), "Intersect 1")
+      assert(!contains(t, 2), "Intersect 2")
+      assert(!contains(t, 3), "Intersect 3")
+    }
+  }
 
+  test("diff contains all elments of s not in t") {
+    new TestSets {
+      val s = diff(s1, s2)
+      assert(contains(s, 1), "Diff 1")
+      assert(!contains(s, 2), "Diff 2")
+      assert(!contains(s, 3), "Diff 3")
+      val t = diff(s1, s1)
+      assert(!contains(t, 1), "Diff 1")
+      assert(!contains(t, 2), "Diff 2")
+      assert(!contains(t, 3), "Diff 3")
+    }
+  }
+
+  test("filter contains all elments of s where p is true") {
+    new TestSets {
+      val s = filter(s1, (x: Int) => (x % 2 == 0))
+      assert(!contains(s, 1), "Filter 1")
+      assert(!contains(s, 2), "Filter 2")
+      assert(!contains(s, 3), "Filter 3")
+      val t = filter(s2, (x: Int) => (x % 2 == 0))
+      assert(!contains(t, 1), "Filter 1")
+      assert(contains(t, 2), "Filter 2")
+      assert(!contains(t, 3), "Filter 3")
+    }
+  }
 }
