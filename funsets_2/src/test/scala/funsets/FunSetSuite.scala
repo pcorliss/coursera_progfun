@@ -149,4 +149,30 @@ class FunSetSuite extends FunSuite {
       assert(!contains(t, 3), "Filter 3")
     }
   }
+
+  test("forall checks all integers within s satisfy function") {
+    new TestSets {
+      assert(forall(s3, (x: Int) => (x % 2 == 1)))
+      assert(!forall(s3, (x: Int) => (x % 2 == 0)))
+      val s4 = singletonSet(-1000)
+      val s5 = singletonSet(1000)
+      assert(forall(s4, (x: Int) => (x < 999)))
+      assert(forall(s5, (x: Int) => (x > 999)))
+    }
+  }
+
+  test("exists returns true if at least one integer satisfies") {
+    new TestSets {
+      assert(!exists(s1, (x: Int) => (x % 2 == 0)))
+      assert(exists(s2, (x: Int) => (x % 2 == 0)))
+    }
+  }
+  test("map returns a set with a function applied") {
+    new TestSets {
+      val s = map(s3, x => x * x)
+      assert(contains(s, 9))
+      val t = map(s2, x => x * x)
+      assert(contains(t, 4))
+    }
+  }
 }
