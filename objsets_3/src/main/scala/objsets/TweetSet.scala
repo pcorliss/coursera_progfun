@@ -66,7 +66,8 @@ abstract class TweetSet {
    * and be implemented in the subclasses?
    */
   def mostRetweeted: Tweet
-  def empty: Boolean
+
+  def isEmpty: Boolean
 
   /**
    * Returns a list containing all tweets of this set, sorted by retweet count
@@ -111,6 +112,7 @@ class Empty extends TweetSet {
   def filterAcc(p: Tweet => Boolean, acc: TweetSet): TweetSet = acc
 
   def mostRetweeted: Tweet = throw new java.util.NoSuchElementException("Empty Set")
+
   def descendingByRetweet: TweetList = Nil
   /**
    * The following methods are already implemented
@@ -124,7 +126,7 @@ class Empty extends TweetSet {
 
   def foreach(f: Tweet => Unit): Unit = ()
 
-  def empty: Boolean = true
+  def isEmpty: Boolean = true
 }
 
 class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
@@ -137,10 +139,11 @@ class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
     ))
   }
 
-  def empty: Boolean = false
+  def isEmpty: Boolean = false
+
   def mostRetweeted: Tweet = {
     try {
-      if (left.empty && right.empty) elem
+      if (left.isEmpty && right.isEmpty) elem
       else filter(tw => tw.retweets > elem.retweets).mostRetweeted
     } catch {
       case ex: java.util.NoSuchElementException => elem
