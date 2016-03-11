@@ -65,8 +65,9 @@ abstract class TweetSet {
    * Question: Should we implment this method here, or should it remain abstract
    * and be implemented in the subclasses?
    */
-    def mostRetweeted: Tweet = ???
-  
+  def mostRetweeted: Tweet
+  def empty: Boolean
+
   /**
    * Returns a list containing all tweets of this set, sorted by retweet count
    * in descending order. In other words, the head of the resulting list should
@@ -76,7 +77,7 @@ abstract class TweetSet {
    * Question: Should we implment this method here, or should it remain abstract
    * and be implemented in the subclasses?
    */
-    def descendingByRetweet: TweetList = ???
+  def descendingByRetweet: TweetList = ???
   
   /**
    * The following methods are already implemented
@@ -109,6 +110,7 @@ abstract class TweetSet {
 class Empty extends TweetSet {
   def filterAcc(p: Tweet => Boolean, acc: TweetSet): TweetSet = acc
 
+  def mostRetweeted: Tweet = throw new java.util.NoSuchElementException("Empty Set")
   /**
    * The following methods are already implemented
    */
@@ -120,6 +122,8 @@ class Empty extends TweetSet {
   def remove(tweet: Tweet): TweetSet = this
 
   def foreach(f: Tweet => Unit): Unit = ()
+
+  def empty: Boolean = true
 }
 
 class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
@@ -130,6 +134,16 @@ class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
       if (p(elem)) acc.incl(elem)
       else acc
     ))
+  }
+
+  def empty: Boolean = false
+  def mostRetweeted: Tweet = {
+    try {
+      if (left.empty && right.empty) elem
+      else filter(tw => tw.retweets > elem.retweets).mostRetweeted
+    } catch {
+      case ex: java.util.NoSuchElementException => elem
+    }
   }
 
   /**
