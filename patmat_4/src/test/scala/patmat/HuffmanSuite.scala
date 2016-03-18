@@ -31,11 +31,24 @@ class HuffmanSuite extends FunSuite {
 
     }
   }
-//
-//
-//  test("string2chars(\"hello, world\")") {
-//    assert(string2Chars("hello, world") === List('h', 'e', 'l', 'l', 'o', ',', ' ', 'w', 'o', 'r', 'l', 'd'))
-//  }
+
+  test("make code tree") {
+    val sampleTree = makeCodeTree(
+      makeCodeTree(Leaf('x', 1), Leaf('e', 1)),
+      Leaf('t', 2)
+    )
+    assert(weight(sampleTree) === 4)
+    assert(chars(sampleTree) === List('x', 'e', 't'))
+  }
+
+
+  test("string2chars(\"hello, world\")") {
+    assert(string2Chars("hello, world") === List('h', 'e', 'l', 'l', 'o', ',', ' ', 'w', 'o', 'r', 'l', 'd'))
+  }
+
+  test("times") {
+    assert(times(string2Chars("foo")) === List(('o', 2), ('f', 1)))
+  }
 //
 //
 //  test("makeOrderedLeafList for some frequency table") {
