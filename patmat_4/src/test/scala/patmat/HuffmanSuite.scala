@@ -1,10 +1,8 @@
 package patmat
 
 import org.scalatest.FunSuite
-
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
-
 import patmat.Huffman._
 
 @RunWith(classOf[JUnitRunner])
@@ -67,10 +65,29 @@ class HuffmanSuite extends FunSuite {
     assert(singleton(empty) === false)
   }
 
-//  test("combine of some leaf list") {
-//    val leaflist = List(Leaf('e', 1), Leaf('t', 2), Leaf('x', 4))
-//    assert(combine(leaflist) === List(Fork(Leaf('e',1),Leaf('t',2),List('e', 't'),3), Leaf('x',4)))
-//  }
+  test("combine of some leaf list") {
+    // Returns list unchanged if < 2 elements
+    val empty = List()
+    val single = List(Leaf('a',2))
+    assert(combine(empty) == empty)
+    assert(combine(single) == single)
+
+    // Takes list of trees ascending weights
+    // Returns first two elements combined into a Fork
+    val pair = List(Leaf('a', 1), Leaf('b', 2))
+    val combined = combine(pair)
+
+    assert(singleton(combined))
+    assert(combined == List(Fork(Leaf('a',1),Leaf('b',2), List('a','b'),3)))
+
+    //Inserted into a longer ascending weight list
+    val ll1 = List(Leaf('e', 1), Leaf('t', 2), Leaf('x', 4))
+    assert(combine(ll1) === List(Fork(Leaf('e',1),Leaf('t',2),List('e', 't'),3), Leaf('x',4)))
+
+    //Inserted into a list with sorting maintained
+    val ll2 = List(Leaf('e', 2), Leaf('t', 2), Leaf('x', 3))
+    assert(combine(ll2) === List(Leaf('x',3), Fork(Leaf('e',2),Leaf('t',2),List('e', 't'),4)))
+  }
 //
 //
 //  test("decode and encode a very short text should be identity") {
