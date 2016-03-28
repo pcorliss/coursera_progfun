@@ -2,6 +2,8 @@ package patmat
 
 import common._
 
+import scala.collection.immutable
+
 /**
  * Assignment 4: Huffman coding
  *
@@ -148,8 +150,8 @@ object Huffman {
    * The parameter `chars` is an arbitrary text. This function extracts the character
    * frequencies from that text and creates a code tree based on them.
    */
-  def createCodeTree(chars: List[Char]): CodeTree = ???
-  
+  def createCodeTree(chars: List[Char]): CodeTree =
+    until(singleton, combine)(makeOrderedLeafList(times(chars))).head
 
   // Part 3: Decoding
 
@@ -159,7 +161,15 @@ object Huffman {
    * This function decodes the bit sequence `bits` using the code tree `tree` and returns
    * the resulting list of characters.
    */
-  def decode(tree: CodeTree, bits: List[Bit]): List[Char] = ???
+  def decode(tree: CodeTree, bits: List[Bit]): List[Char] = {
+    if (bits.isEmpty) List()  // Base Case
+    else if (bits.head == 1) List() // Right
+    else List() // Left
+
+//    tree.isInstanceOf[Leaf]
+
+//    tree
+  }
   
   /**
    * A Huffman coding tree for the French language.
@@ -177,7 +187,7 @@ object Huffman {
   /**
    * Write a function that returns the decoded secret
    */
-  def decodedSecret: List[Char] = ???
+  def decodedSecret: List[Char] = decode(frenchCode, secret)
   
 
   // Part 4a: Encoding using Huffman tree

@@ -96,6 +96,17 @@ class HuffmanSuite extends FunSuite {
     assert(singleton(merged))
     assert(merged === expected)
   }
+
+  test("create code tree") {
+    val t1 = createCodeTree(string2Chars("eagle"))
+    assert(chars(t1) === List('e', 'l', 'g', 'a'))
+    assert(weight(t1) === 5)
+    assert(t1 === Fork(Leaf('e',2),Fork(Leaf('l',1),Fork(Leaf('g',1),Leaf('a',1),List('g', 'a'),2),List('l', 'g', 'a'),3),List('e', 'l', 'g', 'a'),5))
+  }
+
+//  test("decoded secret") {
+//    assert(decodedSecret === string2Chars("fuckjku"))
+//  }
 //
 //
 //  test("decode and encode a very short text should be identity") {
