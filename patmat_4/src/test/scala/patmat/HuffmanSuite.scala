@@ -115,4 +115,23 @@ class HuffmanSuite extends FunSuite {
     }
   }
 
+  test("codeBits Lookup") {
+    val cb = List(('a', List(1, 0)), ('b', List(0)), ('c', List(1)))
+    assert(codeBits(cb)('a') === List(1, 0))
+    assert(codeBits(cb)('b') === List(0))
+    assert(codeBits(cb)('c') === List(1))
+  }
+
+  test("convert tree to code table") {
+    new TestTrees {
+      val convertedT1 = convert(t1)
+      assert(codeBits(convertedT1)('a') === List(0))
+      assert(codeBits(convertedT1)('b') === List(1))
+      val frenchTable = convert(frenchCode)
+      assert(codeBits(frenchTable)('h') === List(0,0,1,1,1,0,1))
+      assert(codeBits(frenchTable)('u') === List(0,1,1,1))
+      assert(codeBits(frenchTable)('f') === List(0,0,1,1,0,1))
+    }
+  }
+
 }
