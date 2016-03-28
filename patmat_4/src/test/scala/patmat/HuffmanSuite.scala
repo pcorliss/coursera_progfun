@@ -88,6 +88,14 @@ class HuffmanSuite extends FunSuite {
     val ll2 = List(Leaf('e', 2), Leaf('t', 2), Leaf('x', 3))
     assert(combine(ll2) === List(Leaf('x',3), Fork(Leaf('e',2),Leaf('t',2),List('e', 't'),4)))
   }
+
+  test("until executes until true") {
+    val trees = List(Leaf('a', 2), Leaf('b', 3), Leaf('d', 4))
+    val merged = until(singleton, combine)(trees)
+    val expected = List(Fork(Leaf('d',4),Fork(Leaf('a',2),Leaf('b',3),List('a', 'b'),5),List('d', 'a', 'b'),9))
+    assert(singleton(merged))
+    assert(merged === expected)
+  }
 //
 //
 //  test("decode and encode a very short text should be identity") {
