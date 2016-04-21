@@ -40,10 +40,9 @@ object Anagrams {
   def wordOccurrences(w: Word): Occurrences =
     w.groupBy(_.toLower).mapValues(_.size).toList.sortBy(_._1)
 
-
   /** Converts a sentence into its character occurrence list. */
   def sentenceOccurrences(s: Sentence): Occurrences =
-    wordOccurrences(s.reduceLeft { _ + _})
+    wordOccurrences(s.reduceLeft {_ + _})
 
   /** The `dictionaryByOccurrences` is a `Map` from different occurrences to a sequence of all
    *  the words that have that occurrence count.
@@ -64,9 +63,12 @@ object Anagrams {
     dictionary.groupBy(wordOccurrences(_))
 
   /** Returns all the anagrams of a given word. */
-  def wordAnagrams(word: Word): List[Word] =
+  def wordAnagrams(word: Word): List[Word] = {
     dictionaryByOccurrences.get(wordOccurrences(word)).getOrElse(List())
 
+    // From Josh
+    //dictionaryByOccurrences.getOrElse(wordOccurrences(word), List())
+  }
   /** Returns the list of all subsets of the occurrence list.
    *  This includes the occurrence itself, i.e. `List(('k', 1), ('o', 1))`
    *  is a subset of `List(('k', 1), ('o', 1))`.
@@ -118,6 +120,7 @@ object Anagrams {
           (head._1, i) :: tailCombo
         }
         headCombinations ++ tailCombinations
+        // Equivalent headCombinations ::: tailCombinations
       }
     }
   }
